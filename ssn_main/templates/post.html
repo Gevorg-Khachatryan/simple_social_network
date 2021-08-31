@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        {% for item in posts %}
+            <div class="col-sm-4">
+{#                <a href="{% url 'content-page' pk=item.id %}" style="all:unset;cursor: pointer">#}
+                    <div class="panel panel-primary news_item" data-news-id="{{ item.id }}">
+                        <div class="panel-heading">{{ item.title }}</div>
+
+                        <div class="panel-footer">{{ item.content | safe }}</div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}</body>
+</html>
