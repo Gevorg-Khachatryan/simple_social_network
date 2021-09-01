@@ -1,0 +1,6 @@
+/simple_social_network/static/
+/ssn_main/migrations/
+db.*
+*.xml
+.idea
+simple_social_network/settings.py

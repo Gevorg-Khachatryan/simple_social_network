@@ -16,10 +16,12 @@
             <td>{{ form.password.label_tag }}</td>
             <td>{{ form.password }}</td>
         </tr>
+        <tr>{{ form.errors }}</tr>
     </table>
 
     <input type="submit" value="login">
-    <input type="hidden" name="next" value="{{ next }}">
 </form>
+<p class="text-center"><a href="/accounts/registration/">Registration</a></p>
+
 </body>
 </html>
