@@ -6,9 +6,11 @@ from ssn_main.models import *
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
-        fields = ['url', 'username', 'email']
+        fields = ['id', 'url', 'username', 'email', 'password']
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):

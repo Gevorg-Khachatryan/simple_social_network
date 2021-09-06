@@ -8,6 +8,12 @@ def users_model():
 
 
 @fixture
+def custom_users_model():
+    from ssn_main.models import CustomUser
+    return CustomUser
+
+
+@fixture
 def posts_model():
     from ssn_main.models import Post
     return Post
