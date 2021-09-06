@@ -43,8 +43,19 @@ class TestSerializers:
         data = serialized_post.data
 
         resp = cli.delete(f'/posts/{post.pk}/')
-        posts_model.objects.create(**{'title': data['title']+'*',
+        posts_model.objects.create(**{'title': data['title'],
                                       'content': data['content'],
                                       'creator_id': data['creator_id']})
+
+        assert resp.status_code == 204
+
+    def test_delete_user(self, users_model, cli, user_serializer, serializer_context):
+        user = users_model.objects.first()
+        serialized_user = user_serializer(user, context=serializer_context)
+        data = serialized_user.data
+
+        resp = cli.delete(f'/users/{user.pk}/')
+        users_model.objects.create(**{'username': data['username'],
+                                      'email': data['email']})
 
         assert resp.status_code == 204
