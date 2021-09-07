@@ -37,3 +37,11 @@ class RegisterSerializer(DefaultRegisterUserSerializer):
         super().__init__(*args, **kwargs)
         self.Meta.model = CustomUser
         self.Meta.fields = ['username', 'password']
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    like = UserSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Post
+        fields = ['like']

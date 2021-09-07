@@ -80,3 +80,11 @@ class TestSerializers:
         users_model.objects.get(id=resp.data.get('id')).delete()
 
         assert resp.status_code == 201
+
+    def test_like(self, cli, posts_model, post_serializer):
+        post = posts_model.objects.first()
+        old_likes = list(post.like.all())
+        resp = cli.post(f'/posts/{post.pk}/like/')
+        updated_likes = list(post.like.all())
+        assert resp.status_code == 200
+        assert old_likes != updated_likes
