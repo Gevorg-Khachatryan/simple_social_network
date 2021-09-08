@@ -50,17 +50,15 @@ class TestSerializers:
         assert resp.status_code == 204
 
     def test_delete_user(self, custom_users_model, cli, user_serializer, serializer_context):
-        user = custom_users_model.objects.first()
-        serialized_user = user_serializer(user, context=serializer_context)
-        data = serialized_user.data
-
-        resp = cli.delete(f'/users/{user.pk}/')
-        new_user = custom_users_model.objects.create(**{'username': data['username'],
-                                                        'email': data['email']})
-        new_user.set_password(user.password)
+        new_user = custom_users_model.objects.create(**{'username': 'username@#$%^@#$',
+                                                        'email': 'test@email.com'})
+        new_user.set_password('test_password')
         new_user.save()
 
+        resp = cli.delete(f'/users/{new_user.pk}/')
+        user = custom_users_model.objects.filter(pk=new_user.pk).exists()
         assert resp.status_code == 204
+        assert user is False
 
     def test_create_post(self, posts_model, cli, post_serializer, serializer_context):
         resp = cli.post('/posts/', {

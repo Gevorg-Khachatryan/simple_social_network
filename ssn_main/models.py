@@ -21,6 +21,15 @@ class Post(models.Model):
     content = models.TextField('Content')
     creator = models.ForeignKey(User, related_name='created_by_%(class)s_related', on_delete=models.CASCADE)
     like = models.ManyToManyField(User, null=True, blank=True)
+    comments = models.ManyToManyField('Comment', null=True, blank=True)
+    created = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         ordering = ['pk']
+
+
+class Comment(models.Model):
+    comment = models.TextField('Comment')
+    author = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now=True)
