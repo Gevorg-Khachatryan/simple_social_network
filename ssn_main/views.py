@@ -20,9 +20,15 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = User.objects.all().order_by('-date_joined')
+    queryset = CustomUser.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=True, methods=['get'])
+    def add_friend(self, request, pk=None, *args, **kwargs):
+        recipient = User.objects.get(pk=pk)
+        FriendRequest.objects.create(sender=CustomUser.objects.get(pk=request.user.pk), recipient=recipient)
+        return Response(status=status.HTTP_200_OK)
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -61,3 +67,18 @@ class PostViewSet(viewsets.ModelViewSet):
             post.comments.add(com)
         serializer = CommentSerializer(post.comments.all(), context={'request': request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FriendRequestViewSet(viewsets.ModelViewSet):
+    queryset = FriendRequest.objects.all()
+    serializer_class = FriendRequestSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return FriendRequest.objects.filter(recipient=self.request.user)
+
+    @action(detail=True, methods=['GET', 'post'])
+    def approve_request(self, request, pk=None, *args, **kwargs):
+        fr = FriendRequest.objects.get(pk=pk)
+        fr.approve_request()
+        return Response(status=status.HTTP_200_OK)

@@ -22,6 +22,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'posts', PostViewSet)
+router.register(r'fried_requests', FriendRequestViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
