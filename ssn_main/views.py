@@ -24,7 +24,6 @@ class IsPossibleToAddAsFriend(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         user = CustomUser.objects.get(pk=request.user.pk)
-        print(user.pk != obj.pk and obj not in user.friends.all(), view.action,'++++++')
         if view.action == 'add_friend':
             return user.pk != obj.pk and obj not in user.friends.all()
         return True
@@ -90,7 +89,6 @@ class PostViewSet(viewsets.ModelViewSet):
                 post.like.remove(CustomUser.objects.get(pk=request.user))
             else:
                 post.like.add(CustomUser.objects.get(pk=request.user))
-        print(post.like.all(),'//////////', request.method)
         serializer = LikeSerializer(post, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
