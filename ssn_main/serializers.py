@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from rest_registration.api.serializers import DefaultRegisterUserSerializer
 
@@ -14,10 +13,17 @@ class FriendRequestListSerializer(serializers.ModelSerializer):
         fields = ['id', 'url', 'sender', 'status']
 
 
-class UserSerializer(serializers.ModelSerializer):
+class BaseUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'url', 'username', 'email']
+
+
+class UserSerializer(BaseUserSerializer):
     password = serializers.CharField(write_only=True)
     received_requests = FriendRequestListSerializer(read_only=True, many=True)
-    friends = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    friends = BaseUserSerializer(read_only=True, many=True)
 
     class Meta:
         model = User
